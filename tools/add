@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+# Arguments
+DATABASE=$1
+VERSION=$2
+
+# Setup mysql-migrate working directory
+mkdir -p "$DATABASE/$VERSION"
+touch "$DATABASE/$VERSION/migrate.sql"
+echo "Created $DATABASE/$VERSION/migrate.sql"

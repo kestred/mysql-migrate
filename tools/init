@@ -1,0 +1,13 @@
+#!/bin/sh
+set -eu
+
+# Arguments
+DATABASE=$1
+
+# Setup mysql-migrate working directory
+mkdir -p "$DATABASE"
+touch "$DATABASE/latest.sql"
+touch "$DATABASE/stable.sql"
+if [ ! -f "$DATABASE/setup.sql" ]; then
+  echo "source stable.sql" > "$DATABASE/setup.sql"
+fi

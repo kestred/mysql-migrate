@@ -1,0 +1,21 @@
+#!/bin/sh
+set -eu
+
+# Arguments
+DATABASE=$1
+FILEPATH=$2
+
+# Handle OS X support
+SED_REGEXP="-r"
+if [ "$(uname)" = "Darwin" ]; then
+    SED_REGEXP="-E"
+fi
+
+# Apply the change and export the updated schema
+mysql -u root "$DATABASE" < "$FILEPATH"
+mysqldump --no-data --skip-comments --skip-add-drop-table --skip-set-charset -u root "$DATABASE" \
+  | grep -v -e '^$' \
+  | grep -v "\!40101 SET" \
+  | grep -v "\!50003 SET" \
+  | sed $SED_REGEXP -e 's|/\*!50017.*\*/ ||' \
+  > "$DATABASE/latest.sql"

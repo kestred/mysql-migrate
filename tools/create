@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+# Arguments
+DATABASE=$1
+
+# Create/reset the database
+mysql -u root -f <<-EOF
+DROP SCHEMA IF EXISTS $DATABASE;
+CREATE SCHEMA $DATABASE CHARACTER SET utf8 COLLATE utf8_general_ci;
+EOF
